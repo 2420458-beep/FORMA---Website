@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cart — FORMA Ergonomic Furniture</title>
+  <meta name="description" content="Review your FORMA cart. Ergonomic chairs, standing desks and accessories — all priced in TK." />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .cart-section { padding: 80px 0 120px; }
+
+    .cart-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .cart-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .cart-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 30px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .cart-panel-header h2 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-light);
+    }
+
+    .cart-count-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .clear-cart-btn {
+      background: none;
+      border: 1px solid rgba(229,57,53,0.3);
+      color: #ef5350;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 6px 16px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: all var(--transition);
+    }
+
+    .clear-cart-btn:hover {
+      background: rgba(229,57,53,0.12);
+      border-color: #ef5350;
+    }
+
+    .cart-items-list { padding: 0; }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 22px 30px;
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background var(--transition);
+      animation: itemIn 0.35s ease forwards;
+    }
+
+    @keyframes itemIn {
+      from { opacity: 0; transform: translateX(-16px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .cart-item:last-child { border-bottom: none; }
+    .cart-item:hover { background: rgba(255,255,255,0.02); }
+
+    .cart-item-thumb {
+      width: 76px;
+      height: 76px;
+      border-radius: var(--radius-md);
+      object-fit: cover;
+      border: 1px solid var(--border-subtle);
+      flex-shrink: 0;
+    }
+
+    .cart-item-thumb-placeholder {
+      width: 76px;
+      height: 76px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05));
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+
+    .cart-item-info { flex: 1; min-width: 0; }
+
+    .cart-item-category {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .cart-item-name {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-light);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cart-item-unit-price {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .qty-control {
+      display: flex;
+      align-items: center;
+      background: var(--bg-dark);
+      border: 1px solid var(--border-subtle);
+      border-radius: 50px;
+      overflow: hidden;
+    }
+
+    .qty-btn {
+      width: 34px;
+      height: 34px;
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-body);
+      transition: background var(--transition);
+    }
+
+    .qty-btn:hover { background: rgba(201,168,76,0.12); }
+
+    .qty-value {
+      min-width: 32px;
+      text-align: center;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-light);
+    }
+
+    .cart-item-subtotal {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+      min-width: 110px;
+      text-align: right;
+    }
+
+    .remove-item-btn {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 50%;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .remove-item-btn:hover {
+      color: #ef5350;
+      background: rgba(229,57,53,0.1);
+    }
+
+    .empty-cart {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 80px 30px;
+      text-align: center;
+    }
+
+    .empty-cart-icon { font-size: 4rem; opacity: 0.4; }
+
+    .empty-cart h3 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .empty-cart p {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      max-width: 300px;
+    }
+
+    .order-summary {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      position: sticky;
+      top: 100px;
+    }
+
+    .order-summary h2 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-light);
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      font-size: 0.88rem;
+    }
+
+    .summary-row .label { color: var(--text-muted); }
+    .summary-row .value { color: var(--text-light); font-weight: 500; }
+    .summary-row .value.free { color: #4CAF50; font-weight: 600; }
+
+    .summary-divider {
+      border: none;
+      border-top: 1px solid var(--border-subtle);
+      margin: 18px 0;
+    }
+
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .summary-total .total-label {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-light);
+    }
+
+    .summary-total .total-value {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 15px 24px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--font-body);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: all var(--transition);
+      box-shadow: 0 6px 24px rgba(201,168,76,0.35);
+      margin-bottom: 14px;
+    }
+
+    .checkout-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(201,168,76,0.55);
+    }
+
+    .checkout-btn:active { transform: translateY(0); }
+
+    .continue-shopping-link {
+      display: block;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      transition: color var(--transition);
+      margin-bottom: 24px;
+    }
+
+    .continue-shopping-link:hover { color: var(--primary); }
+
+    .trust-badges {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .trust-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .promo-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .promo-section label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .promo-input-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .promo-input {
+      flex: 1;
+      background: var(--bg-dark);
+      border: 1px solid var(--border-subtle);
+      border-radius: 50px;
+      padding: 10px 18px;
+      font-family: var(--font-body);
+      font-size: 0.83rem;
+      color: var(--text-light);
+      outline: none;
+      transition: border-color var(--transition);
+    }
+
+    .promo-input::placeholder { color: var(--text-dim); }
+    .promo-input:focus { border-color: var(--border); }
+
+    .promo-apply-btn {
+      padding: 10px 20px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+
+    .promo-apply-btn:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    @media (max-width: 900px) {
+      .cart-layout { grid-template-columns: 1fr; }
+      .order-summary { position: static; }
+    }
+
+    @media (max-width: 560px) {
+      .cart-item { flex-wrap: wrap; gap: 12px; }
+      .cart-item-subtotal { min-width: auto; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Name: Golam Kibria Zihad, ID: 2420458 -->
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <header class="site-header" id="siteHeader">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">F</div>
+          <div class="logo-text">FOR<span>MA</span></div>
+        </a>
+        <nav>
+          <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+          </button>
+          <div class="nav-links" id="navLinks">
+            <a href="index.html">Home</a>
+            <a href="products.html">Products</a>
+            <a href="contact.html">Contact</a>
+            <a href="cart.html" class="nav-cart active" id="cartNavLink">Cart <span class="cart-badge" id="cartBadge"></span></a>
+            <a href="products.html" class="nav-cta">Shop Now</a>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="container">
+      <div class="page-hero-badge">Your Cart</div>
+      <h1 class="section-title">Shopping <span class="gold-accent">Cart</span></h1>
+      <p class="section-subtitle" style="margin: 0 auto; text-align:center;">
+        Review your selected items and proceed to checkout. All prices shown in Bangladeshi Taka (TK).
+      </p>
+    </div>
+  </section>
+
+  <section class="cart-section">
+    <div class="container">
+      <div class="cart-layout">
+
+        <div class="cart-panel reveal" id="cartPanel">
+          <div class="cart-panel-header">
+            <div>
+              <h2>Cart Items</h2>
+              <span class="cart-count-label" id="cartCountLabel">0 items</span>
+            </div>
+            <button class="clear-cart-btn" onclick="clearCart()">Clear All</button>
+          </div>
+          <div class="cart-items-list" id="cartItemsList"></div>
+        </div>
+
+        <div class="order-summary reveal">
+          <h2>Order Summary</h2>
+          <div class="summary-row">
+            <span class="label">Subtotal</span>
+            <span class="value" id="summarySubtotal">0 TK</span>
+          </div>
+          <div class="summary-row">
+            <span class="label">Shipping</span>
+            <span class="value" id="summaryShipping">&#8212;</span>
+          </div>
+          <div class="summary-row">
+            <span class="label">VAT (15%)</span>
+            <span class="value" id="summaryVat">0 TK</span>
+          </div>
+
+          <div class="promo-section">
+            <label for="promoCode">Promo Code</label>
+            <div class="promo-input-row">
+              <input type="text" id="promoCode" class="promo-input" placeholder="Enter code..." />
+              <button class="promo-apply-btn" onclick="applyPromo()">Apply</button>
+            </div>
+          </div>
+
+          <hr class="summary-divider" />
+
+          <div class="summary-total">
+            <span class="total-label">Total</span>
+            <span class="total-value" id="summaryTotal">0 TK</span>
+          </div>
+
+          <button class="checkout-btn" onclick="checkout()">Proceed to Checkout &#x2192;</button>
+          <a href="products.html" class="continue-shopping-link">&#x2190; Continue Shopping</a>
+
+          <div class="trust-badges">
+            <div class="trust-badge-row"><span>&#x1F512;</span><span>Secure 256-bit SSL checkout</span></div>
+            <div class="trust-badge-row"><span>&#x1F504;</span><span>30-day hassle-free returns</span></div>
+            <div class="trust-badge-row"><span>&#x1F69A;</span><span>Free delivery on orders over 5,000 TK</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <div class="logo-icon">F</div>
+            <div class="logo-text">FOR<span>MA</span></div>
+          </a>
+          <p>Precision-engineered ergonomic furniture for the modern professional. Built to last. Designed to inspire.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Instagram">&#x1F4F7;</a>
+            <a href="#" class="social-link" aria-label="Twitter">&#x1F426;</a>
+            <a href="#" class="social-link" aria-label="LinkedIn">&#x1F4BC;</a>
+            <a href="#" class="social-link" aria-label="YouTube">&#x25B6;&#xFE0F;</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Products</h4>
+          <ul>
+            <li><a href="products.html">Apex Pro Chair</a></li>
+            <li><a href="products.html">Studio Series</a></li>
+            <li><a href="products.html">Executive Chair</a></li>
+            <li><a href="products.html">Standing Desks</a></li>
+            <li><a href="products.html">Accessories</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About FORMA</a></li>
+            <li><a href="#">Our Process</a></li>
+            <li><a href="#">Sustainability</a></li>
+            <li><a href="#">Press Room</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="#">Warranty Policy</a></li>
+            <li><a href="#">Assembly Guides</a></li>
+            <li><a href="#">Shipping &amp; Returns</a></li>
+            <li><a href="#">Trade Program</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 FORMA Ergonomics Ltd. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        <p>Crafted with &#x2764;&#xFE0F; for modern professionals</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const header = document.getElementById('siteHeader');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    document.getElementById('menuToggle').addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => observer.observe(el));
+
+    function showToast(icon, title, message) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = '<div class="toast-icon">' + icon + '</div><div class="toast-body"><strong>' + title + '</strong><span>' + message + '</span></div>';
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.add('hiding');
+        setTimeout(() => toast.remove(), 380);
+      }, 4000);
+    }
+
+    const PRODUCT_CATALOGUE = {
+      'Apex Pro':             { category: 'Ergonomic Chair',  img: 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=200&q=80&auto=format&fit=crop', icon: '🪑' },
+      'Studio Series':        { category: 'Ergonomic Chair',  img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=200&q=80&auto=format&fit=crop', icon: '🪑' },
+      'Executive Prestige':   { category: 'Executive Chair',  img: 'https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=200&q=80&auto=format&fit=crop', icon: '🪑' },
+      'Elevate Electric Desk':{ category: 'Standing Desk',    img: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=200&q=80&auto=format&fit=crop', icon: '🖥️' },
+      'ErgoRest Monitor Arm': { category: 'Accessory',        img: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=200&q=80&auto=format&fit=crop', icon: '🖥️' },
+      'LumbaRest Cushion':    { category: 'Accessory',        img: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=200&q=80&auto=format&fit=crop', icon: '🛋️' }
+    };
+
+    function formatTK(amount) {
+      return amount.toLocaleString('en-BD') + ' TK';
+    }
+
+    function renderCart() {
+      const cart = JSON.parse(localStorage.getItem('formaCart') || '[]');
+      const list = document.getElementById('cartItemsList');
+      const countLabel = document.getElementById('cartCountLabel');
+      const totalItems = cart.reduce((sum, i) => sum + i.qty, 0);
+
+      countLabel.textContent = totalItems + ' item' + (totalItems !== 1 ? 's' : '');
+      updateCartBadge(cart);
+
+      if (cart.length === 0) {
+        list.innerHTML = '<div class="empty-cart"><div class="empty-cart-icon">🛒</div><h3>Your cart is empty</h3><p>Looks like you haven\'t added any items yet. Browse our collection to get started.</p><a href="products.html" class="btn btn-primary" style="margin-top:8px;">Browse Products</a></div>';
+        updateSummary(cart);
+        return;
+      }
+
+      list.innerHTML = cart.map((item, idx) => {
+        const meta = PRODUCT_CATALOGUE[item.name] || { category: 'Product', icon: '📦', img: '' };
+        const thumbHtml = meta.img
+          ? '<img class="cart-item-thumb" src="' + meta.img + '" alt="' + item.name + '" />'
+          : '<div class="cart-item-thumb-placeholder">' + meta.icon + '</div>';
+
+        return '<div class="cart-item" id="cartItem_' + idx + '">' +
+          thumbHtml +
+          '<div class="cart-item-info">' +
+          '<div class="cart-item-category">' + meta.category + '</div>' +
+          '<div class="cart-item-name">' + item.name + '</div>' +
+          '<div class="cart-item-unit-price">' + formatTK(item.price) + ' each</div>' +
+          '</div>' +
+          '<div class="qty-control">' +
+          '<button class="qty-btn" onclick="changeQty(' + idx + ', -1)" aria-label="Decrease">&#8722;</button>' +
+          '<span class="qty-value">' + item.qty + '</span>' +
+          '<button class="qty-btn" onclick="changeQty(' + idx + ', 1)" aria-label="Increase">+</button>' +
+          '</div>' +
+          '<div class="cart-item-subtotal">' + formatTK(item.price * item.qty) + '</div>' +
+          '<button class="remove-item-btn" onclick="removeItem(' + idx + ')" aria-label="Remove">&#x2715;</button>' +
+          '</div>';
+      }).join('');
+
+      updateSummary(cart);
+    }
+
+    function updateSummary(cart) {
+      const subtotal = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+      const vat = Math.round(subtotal * 0.15);
+      const shipping = subtotal === 0 ? 0 : (subtotal >= 5000 ? 0 : 250);
+      const total = subtotal + vat + shipping;
+
+      document.getElementById('summarySubtotal').textContent = formatTK(subtotal);
+      document.getElementById('summaryVat').textContent = formatTK(vat);
+      const shippingEl = document.getElementById('summaryShipping');
+      if (shipping === 0 && subtotal > 0) {
+        shippingEl.innerHTML = '<span class="free">Free</span>';
+      } else if (subtotal === 0) {
+        shippingEl.textContent = '—';
+      } else {
+        shippingEl.textContent = formatTK(shipping);
+      }
+      document.getElementById('summaryTotal').textContent = formatTK(total);
+    }
+
+    function updateCartBadge(cart) {
+      cart = cart || JSON.parse(localStorage.getItem('formaCart') || '[]');
+      const count = cart.reduce((sum, item) => sum + item.qty, 0);
+      const badge = document.getElementById('cartBadge');
+      if (badge) {
+        badge.textContent = count;
+        badge.style.display = count > 0 ? 'inline-flex' : 'none';
+      }
+    }
+
+    function changeQty(idx, delta) {
+      const cart = JSON.parse(localStorage.getItem('formaCart') || '[]');
+      if (!cart[idx]) return;
+      cart[idx].qty = Math.max(1, cart[idx].qty + delta);
+      localStorage.setItem('formaCart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    function removeItem(idx) {
+      const cart = JSON.parse(localStorage.getItem('formaCart') || '[]');
+      const removed = cart.splice(idx, 1)[0];
+      localStorage.setItem('formaCart', JSON.stringify(cart));
+      renderCart();
+      showToast('🗑️', 'Removed', removed.name + ' was removed from your cart.');
+    }
+
+    function clearCart() {
+      if (confirm('Remove all items from your cart?')) {
+        localStorage.removeItem('formaCart');
+        renderCart();
+        showToast('🧹', 'Cart Cleared', 'All items have been removed.');
+      }
+    }
+
+    function applyPromo() {
+      const code = document.getElementById('promoCode').value.trim().toUpperCase();
+      if (code === 'FORMA10') {
+        showToast('🎉', 'Promo Applied!', '10% discount has been applied to your order.');
+      } else if (code === '') {
+        showToast('⚠️', 'No Code', 'Please enter a promo code first.');
+      } else {
+        showToast('❌', 'Invalid Code', '"' + code + '" is not a valid promo code.');
+      }
+    }
+
+    function checkout() {
+      const cart = JSON.parse(localStorage.getItem('formaCart') || '[]');
+      if (cart.length === 0) {
+        showToast('⚠️', 'Cart is Empty', 'Please add items to your cart before checking out.');
+        return;
+      }
+      showToast('✅', 'Order Placed!', 'Thank you! Your order is being processed.');
+      setTimeout(() => {
+        localStorage.removeItem('formaCart');
+        renderCart();
+      }, 1500);
+    }
+
+    renderCart();
+  </script>
+</body>
+</html>
