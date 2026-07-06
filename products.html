@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Products — FORMA Ergonomic Furniture</title>
+  <meta name="description"
+    content="Browse FORMA's complete collection of premium ergonomic chairs, standing desks, and workspace accessories. Find your perfect chair today." />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Products page specific styles ────────────────────── */
+
+    .products-section {
+      padding: 80px 0 120px;
+    }
+
+    /* ── Filter Bar ──────────────────────────────────────── */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 56px;
+    }
+
+    .filter-btn {
+      padding: 9px 22px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border-subtle);
+      background: transparent;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      transition: all var(--transition);
+      letter-spacing: 0.02em;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(201, 168, 76, 0.3);
+    }
+
+    /* ── CSS Grid requirement ────────────────────────────── */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    /* ── Product Card ────────────────────────────────────── */
+    .product-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: all var(--transition);
+      position: relative;
+    }
+
+    .product-card:hover {
+      border-color: var(--border);
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-gold);
+    }
+
+    .product-img-wrap {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-img-wrap img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .product-card:hover .product-img-wrap img {
+      transform: scale(1.06);
+    }
+
+    .product-badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 50px;
+      box-shadow: 0 4px 12px rgba(201, 168, 76, 0.4);
+    }
+
+    .product-badge.new-badge {
+      background: linear-gradient(135deg, #4CAF50, #2e7d32);
+      box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+    }
+
+    .product-badge.sale-badge {
+      background: linear-gradient(135deg, #e53935, #b71c1c);
+      box-shadow: 0 4px 12px rgba(229, 57, 53, 0.4);
+    }
+
+    .quick-view-btn {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      background: rgba(15, 15, 26, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      color: var(--primary);
+      border-radius: 50px;
+      padding: 8px 18px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: all var(--transition);
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    .product-card:hover .quick-view-btn {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .quick-view-btn:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .product-body {
+      padding: 24px 26px 28px;
+    }
+
+    .product-category {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .product-name {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-light);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .product-desc {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 20px;
+    }
+
+    .product-rating {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .rating-stars {
+      color: var(--primary);
+      font-size: 0.85rem;
+    }
+
+    .rating-count {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 18px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .product-price-wrap {}
+
+    .price-old {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      text-decoration: line-through;
+      margin-bottom: 2px;
+    }
+
+    .price-current {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .add-to-cart-btn {
+      padding: 11px 22px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: all var(--transition);
+      box-shadow: 0 4px 14px rgba(201, 168, 76, 0.3);
+    }
+
+    .add-to-cart-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 22px rgba(201, 168, 76, 0.5);
+    }
+
+    .add-to-cart-btn:active {
+      transform: scale(0.97);
+    }
+
+    /* ── Color swatches ──────────────────────────────────── */
+    .color-swatches {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+
+    .swatch {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .swatch:hover {
+      border-color: var(--primary);
+      transform: scale(1.2);
+    }
+
+    /* ── Warranty Banner ─────────────────────────────────── */
+    .warranty-banner {
+      background: linear-gradient(135deg, rgba(201, 168, 76, 0.1), rgba(168, 134, 46, 0.05));
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-top: 72px;
+    }
+
+    .warranty-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .warranty-icon {
+      font-size: 1.8rem;
+      width: 52px;
+      height: 52px;
+      background: rgba(201, 168, 76, 0.1);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .warranty-text strong {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      font-weight: 600;
+    }
+
+    .warranty-text span {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* ── Responsive ──────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .warranty-banner {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Name: Golam Kibria Zihad, ID: 2420458 -->
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ═══ HEADER ══════════════════════════════════════════ -->
+  <header class="site-header" id="siteHeader">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">F</div>
+          <div class="logo-text">FOR<span>MA</span></div>
+        </a>
+        <nav>
+          <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+          </button>
+          <div class="nav-links" id="navLinks">
+            <a href="index.html">Home</a>
+            <a href="products.html" class="active">Products</a>
+            <a href="contact.html">Contact</a>
+            <a href="cart.html" class="nav-cart" id="cartNavLink">Cart <span class="cart-badge" id="cartBadge"></span></a>
+            <a href="products.html" class="nav-cta">Shop Now</a>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ PAGE HERO ════════════════════════════════════════ -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="page-hero-badge">Our Collection</div>
+      <h1 class="section-title">Premium Ergonomic <span class="gold-accent">Chairs & Desks</span></h1>
+      <p class="section-subtitle" style="margin: 0 auto; text-align:center;">
+        Each piece in the FORMA collection is a masterwork of ergonomic engineering and contemporary design. Built for
+        those who refuse to compromise on either comfort or aesthetics.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ PRODUCTS SECTION (display: grid) ════════════════ -->
+  <section class="products-section">
+    <div class="container">
+
+      <!-- Filter Bar -->
+      <div class="filter-bar reveal">
+        <button class="filter-btn active" onclick="filterProducts('all', this)">All Products</button>
+        <button class="filter-btn" onclick="filterProducts('chair', this)">Chairs</button>
+        <button class="filter-btn" onclick="filterProducts('desk', this)">Standing Desks</button>
+        <button class="filter-btn" onclick="filterProducts('accessory', this)">Accessories</button>
+      </div>
+
+      <!-- Products Grid — CSS Grid -->
+      <div class="products-grid" id="productsGrid">
+
+        <!-- Card 1 -->
+        <article class="product-card reveal" data-category="chair">
+          <div class="product-img-wrap">
+            <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=700&q=80&auto=format&fit=crop"
+              alt="FORMA Apex Pro ergonomic chair in midnight black" />
+            <span class="product-badge">Best Seller</span>
+            <button class="quick-view-btn"
+              onclick="showToast('👁️', 'Quick View', 'Full product details coming soon.')">Quick View</button>
+          </div>
+          <div class="product-body">
+            <div class="product-category">Ergonomic Chair</div>
+            <h2 class="product-name">Apex Pro</h2>
+            <div class="color-swatches">
+              <div class="swatch" style="background:#1a1a1a;" title="Midnight Black"></div>
+              <div class="swatch" style="background:#e0e0e0;" title="Pearl White"></div>
+              <div class="swatch" style="background:#c9a84c;" title="Champagne Gold"></div>
+            </div>
+            <p class="product-desc">Our flagship chair — the pinnacle of ergonomic science. Featuring 14-point
+              adjustment, AirFlow Mesh, and 4D armrests for the ultimate seated experience.</p>
+            <div class="product-rating">
+              <span class="rating-stars">★★★★★</span>
+              <span class="rating-count">(2,847 reviews)</span>
+            </div>
+            <div class="product-footer">
+              <div class="product-price-wrap">
+                <div class="price-old">7,999 TK</div>
+                <div class="price-current">5,999 TK</div>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('Apex Pro', 5999)">Add to Cart</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="product-card reveal" data-category="chair">
+          <div class="product-img-wrap">
+            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=700&q=80&auto=format&fit=crop"
+              alt="FORMA Studio Series ergonomic chair" />
+            <span class="product-badge new-badge">New 2025</span>
+            <button class="quick-view-btn"
+              onclick="showToast('👁️', 'Quick View', 'Full product details coming soon.')">Quick View</button>
+          </div>
+          <div class="product-body">
+            <div class="product-category">Ergonomic Chair</div>
+            <h2 class="product-name">Studio Series</h2>
+            <div class="color-swatches">
+              <div class="swatch" style="background:#2c3e50;" title="Ocean Slate"></div>
+              <div class="swatch" style="background:#795548;" title="Walnut Brown"></div>
+              <div class="swatch" style="background:#37474f;" title="Storm Grey"></div>
+            </div>
+            <p class="product-desc">Designed for creative professionals. The Studio Series combines minimalist
+              Scandinavian aesthetics with FORMA's signature ergonomic support system.</p>
+            <div class="product-rating">
+              <span class="rating-stars">★★★★★</span>
+              <span class="rating-count">(1,204 reviews)</span>
+            </div>
+            <div class="product-footer">
+              <div class="product-price-wrap">
+                <div class="price-old"></div>
+                <div class="price-current">12,999 TK</div>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('Studio Series', 12999)">Add to Cart</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="product-card reveal" data-category="chair">
+          <div class="product-img-wrap">
+            <img src="https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=700&q=80&auto=format&fit=crop"
+              alt="FORMA Executive leather ergonomic chair" />
+            <button class="quick-view-btn"
+              onclick="showToast('👁️', 'Quick View', 'Full product details coming soon.')">Quick View</button>
+          </div>
+          <div class="product-body">
+            <div class="product-category">Executive Chair</div>
+            <h2 class="product-name">Executive Prestige</h2>
+            <div class="color-swatches">
+              <div class="swatch" style="background:#1a1a1a;" title="Jet Black Leather"></div>
+              <div class="swatch" style="background:#8d6e63;" title="Cognac Leather"></div>
+            </div>
+            <p class="product-desc">Command the room. Full-grain leather upholstery over our precision ergonomic frame —
+              the choice of CEOs, board members, and executive leadership worldwide.</p>
+            <div class="product-rating">
+              <span class="rating-stars">★★★★★</span>
+              <span class="rating-count">(876 reviews)</span>
+            </div>
+            <div class="product-footer">
+              <div class="product-price-wrap">
+                <div class="price-old"></div>
+                <div class="price-current">3,299 TK</div>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('Executive Prestige', 3299)">Add to Cart</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="product-card reveal" data-category="desk">
+          <div class="product-img-wrap">
+            <img src="https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=700&q=80&auto=format&fit=crop"
+              alt="FORMA Elevate electric standing desk" />
+            <span class="product-badge new-badge">New 2025</span>
+            <button class="quick-view-btn"
+              onclick="showToast('👁️', 'Quick View', 'Full product details coming soon.')">Quick View</button>
+          </div>
+          <div class="product-body">
+            <div class="product-category">Standing Desk</div>
+            <h2 class="product-name">Elevate Electric Desk</h2>
+            <div class="color-swatches">
+              <div class="swatch" style="background:#f5f0e8;" title="Natural Oak"></div>
+              <div class="swatch" style="background:#3e2723;" title="Smoked Walnut"></div>
+              <div class="swatch" style="background:#212121;" title="Obsidian Black"></div>
+            </div>
+            <p class="product-desc">Height-adjustable from 24" to 50" with a dual motor, anti-collision system, and 4
+              memory presets. Solid bamboo desktop in your choice of finish.</p>
+            <div class="product-rating">
+              <span class="rating-stars">★★★★☆</span>
+              <span class="rating-count">(634 reviews)</span>
+            </div>
+            <div class="product-footer">
+              <div class="product-price-wrap">
+                <div class="price-old">9,099 TK</div>
+                <div class="price-current">7,849 TK</div>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('Elevate Electric Desk', 7849)">Add to Cart</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="product-card reveal" data-category="accessory">
+          <div class="product-img-wrap">
+            <img src="https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=700&q=80&auto=format&fit=crop"
+              alt="FORMA ErgoRest monitor arm" />
+            <span class="product-badge sale-badge">Save 20%</span>
+            <button class="quick-view-btn"
+              onclick="showToast('👁️', 'Quick View', 'Full product details coming soon.')">Quick View</button>
+          </div>
+          <div class="product-body">
+            <div class="product-category">Accessory</div>
+            <h2 class="product-name">ErgoRest Monitor Arm</h2>
+            <div class="color-swatches">
+              <div class="swatch" style="background:#212121;" title="Matte Black"></div>
+              <div class="swatch" style="background:#e0e0e0;" title="Silver"></div>
+            </div>
+            <p class="product-desc">Full 360° rotation, 20" of vertical travel, and integrated cable management. Holds
+              monitors up to 32" and 17 lbs. Tool-free adjustment in seconds.</p>
+            <div class="product-rating">
+              <span class="rating-stars">★★★★★</span>
+              <span class="rating-count">(1,531 reviews)</span>
+            </div>
+            <div class="product-footer">
+              <div class="product-price-wrap">
+                <div class="price-old">949 TK</div>
+                <div class="price-current">1,299 TK</div>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('ErgoRest Monitor Arm', 1299)">Add to Cart</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 6 -->
+        <article class="product-card reveal" data-category="accessory">
+          <div class="product-img-wrap">
+            <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=700&q=80&auto=format&fit=crop"
+              alt="FORMA LumbaRest lumbar support cushion" />
+            <button class="quick-view-btn"
+              onclick="showToast('👁️', 'Quick View', 'Full product details coming soon.')">Quick View</button>
+          </div>
+          <div class="product-body">
+            <div class="product-category">Accessory</div>
+            <h2 class="product-name">LumbaRest Cushion</h2>
+            <div class="color-swatches">
+              <div class="swatch" style="background:#37474f;" title="Charcoal"></div>
+              <div class="swatch" style="background:#c9a84c;" title="Gold Trim"></div>
+              <div class="swatch" style="background:#eeeeee;" title="Light Grey"></div>
+            </div>
+            <p class="product-desc">Dual-density memory foam lumbar cushion with a 3D adjustable strap system.
+              Compatible with any office chair and includes a breathable mesh cover.</p>
+            <div class="product-rating">
+              <span class="rating-stars">★★★★★</span>
+              <span class="rating-count">(3,219 reviews)</span>
+            </div>
+            <div class="product-footer">
+              <div class="product-price-wrap">
+                <div class="price-old">800 TK</div>
+                <div class="price-current">500 TK</div>
+              </div>
+              <button class="add-to-cart-btn" onclick="addToCart('LumbaRest Cushion', 500)">Add to Cart</button>
+            </div>
+          </div>
+        </article>
+
+      </div><!-- /products-grid -->
+
+      <!-- Warranty / Trust Bar -->
+      <div class="warranty-banner reveal">
+        <div class="warranty-item">
+          <div class="warranty-icon">🛡️</div>
+          <div class="warranty-text">
+            <strong>12-Year Warranty</strong>
+            <span>All mechanical & structural components</span>
+          </div>
+        </div>
+        <div class="warranty-item">
+          <div class="warranty-icon">🚚</div>
+          <div class="warranty-text">
+            <strong>Free White-Glove Delivery</strong>
+            <span>Orders over 5,000 TK — delivery & assembly included</span>
+          </div>
+        </div>
+        <div class="warranty-item">
+          <div class="warranty-icon">🔄</div>
+          <div class="warranty-text">
+            <strong>30-Day Free Returns</strong>
+            <span>Not in love? Return it, no questions asked</span>
+          </div>
+        </div>
+        <div class="warranty-item">
+          <div class="warranty-icon">💳</div>
+          <div class="warranty-text">
+            <strong>0% APR Financing</strong>
+            <span>From just 4,900 TK/month with approved credit</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ════════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <div class="logo-icon">F</div>
+            <div class="logo-text">FOR<span>MA</span></div>
+          </a>
+          <p>Precision-engineered ergonomic furniture for the modern professional. Built to last. Designed to inspire.
+          </p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Instagram">📷</a>
+            <a href="#" class="social-link" aria-label="Twitter">🐦</a>
+            <a href="#" class="social-link" aria-label="LinkedIn">💼</a>
+            <a href="#" class="social-link" aria-label="YouTube">▶️</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Products</h4>
+          <ul>
+            <li><a href="products.html">Apex Pro Chair</a></li>
+            <li><a href="products.html">Studio Series</a></li>
+            <li><a href="products.html">Executive Chair</a></li>
+            <li><a href="products.html">Standing Desks</a></li>
+            <li><a href="products.html">Accessories</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About FORMA</a></li>
+            <li><a href="#">Our Process</a></li>
+            <li><a href="#">Sustainability</a></li>
+            <li><a href="#">Press Room</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="#">Warranty Policy</a></li>
+            <li><a href="#">Assembly Guides</a></li>
+            <li><a href="#">Shipping & Returns</a></li>
+            <li><a href="#">Trade Program</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 FORMA Ergonomics Ltd. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of
+            Service</a></p>
+        <p>Crafted with ❤️ for modern professionals</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Header scroll effect ─────────────────────────────
+    const header = document.getElementById('siteHeader');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // ── Mobile menu toggle ───────────────────────────────
+    document.getElementById('menuToggle').addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+
+    // ── Scroll-reveal ────────────────────────────────────
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => observer.observe(el));
+
+    // ── Toast notification system ─────────────────────────
+    function showToast(icon, title, message) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <div class="toast-icon">${icon}</div>
+        <div class="toast-body">
+          <strong>${title}</strong>
+          <span>${message}</span>
+        </div>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.add('hiding');
+        setTimeout(() => toast.remove(), 380);
+      }, 4000);
+    }
+
+    // ── Add to Cart — onclick handler ─────────────────────
+    function addToCart(productName, price) {
+      const cart = JSON.parse(localStorage.getItem('formaCart') || '[]');
+      const existing = cart.find(item => item.name === productName);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ name: productName, price: price, qty: 1 });
+      }
+      localStorage.setItem('formaCart', JSON.stringify(cart));
+      updateCartBadge();
+      showToast('🛒', 'Added to Cart!', `${productName} has been added to your cart.`);
+    }
+
+    // ── Cart badge count ──────────────────────────────────
+    function updateCartBadge() {
+      const cart = JSON.parse(localStorage.getItem('formaCart') || '[]');
+      const count = cart.reduce((sum, item) => sum + item.qty, 0);
+      const badge = document.getElementById('cartBadge');
+      if (badge) {
+        badge.textContent = count;
+        badge.style.display = count > 0 ? 'inline-flex' : 'none';
+      }
+    }
+
+    // Run on page load
+    updateCartBadge();
+
+    // ── Product filter ────────────────────────────────────
+    function filterProducts(category, btn) {
+      // Update active button
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Show/hide cards
+      document.querySelectorAll('.product-card').forEach(card => {
+        const match = category === 'all' || card.dataset.category === category;
+        card.style.display = match ? '' : 'none';
+      });
+    }
+  </script>
+</body>
+
+</html>
