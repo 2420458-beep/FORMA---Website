@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FORMA — Premium Ergonomic Furniture</title>
+  <meta name="description" content="FORMA crafts precision-engineered ergonomic furniture for the modern professional. Elevate your workspace with award-winning design and unparalleled comfort." />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Hero Section (Flexbox Layout) ────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 80px;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 60% 80% at 70% 50%, rgba(201,168,76,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(201,168,76,0.04) 0%, transparent 50%);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.025'%3E%3Ccircle cx='40' cy='40' r='1.5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    /* FLEXBOX requirement fulfilled here */
+    .hero-inner {
+      display: flex;
+      align-items: center;
+      gap: 80px;
+      padding: 60px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 50px;
+      padding: 7px 18px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 28px;
+    }
+
+    .hero-badge-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--primary);
+      border-radius: 50%;
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 5.5vw, 4.4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--text-light);
+      margin-bottom: 24px;
+    }
+
+    .hero-title .line-gold { color: var(--primary); }
+
+    .hero-description {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.85;
+      max-width: 500px;
+      margin-bottom: 40px;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .stat-item { }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      letter-spacing: 0.05em;
+    }
+
+    /* Hero image side */
+    .hero-visual {
+      flex: 1;
+      min-width: 0;
+      position: relative;
+    }
+
+    .hero-img-wrap {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-dark);
+    }
+
+    .hero-img-wrap img {
+      width: 100%;
+      height: 580px;
+      object-fit: cover;
+      border-radius: var(--radius-lg);
+      transition: transform 0.6s ease;
+    }
+
+    .hero-img-wrap:hover img { transform: scale(1.03); }
+
+    .hero-img-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(15,15,26,0.3) 0%, transparent 60%);
+      border-radius: var(--radius-lg);
+    }
+
+    .hero-float-card {
+      position: absolute;
+      bottom: -24px;
+      left: -24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px 22px;
+      box-shadow: var(--shadow-gold);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      backdrop-filter: blur(10px);
+    }
+
+    .float-card-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+    }
+
+    .float-card-text strong {
+      display: block;
+      font-size: 0.88rem;
+      color: var(--text-light);
+    }
+
+    .float-card-text span {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* ── Section Padding ─────────────────────────────────── */
+    section { padding: 100px 0; }
+
+    /* ── Features Section ────────────────────────────────── */
+    .features-section { background: var(--secondary); }
+
+    .features-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .features-header .section-subtitle {
+      margin: 0 auto;
+    }
+
+    /* Flex used for features row */
+    .features-flex {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .feature-card {
+      flex: 1;
+      min-width: 240px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 36px 30px;
+      transition: all var(--transition);
+    }
+
+    .feature-card:hover {
+      border-color: var(--border);
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-gold);
+      background: var(--bg-card-hover);
+    }
+
+    .feature-icon {
+      width: 56px;
+      height: 56px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+      transition: all var(--transition);
+    }
+
+    .feature-card:hover .feature-icon {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-color: var(--primary);
+    }
+
+    .feature-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-light);
+      margin-bottom: 10px;
+    }
+
+    .feature-card p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    /* ── Showcase Section ────────────────────────────────── */
+    /* Flex layout: image left, text right */
+    .showcase-flex {
+      display: flex;
+      align-items: center;
+      gap: 72px;
+    }
+
+    .showcase-flex.reverse { flex-direction: row-reverse; }
+
+    .showcase-visual {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .showcase-visual img {
+      width: 100%;
+      height: 440px;
+      object-fit: cover;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-dark);
+    }
+
+    .showcase-content { flex: 1; min-width: 0; }
+
+    .showcase-content p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+
+    .feature-list {
+      margin: 28px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .feature-list li::before {
+      content: '✦';
+      color: var(--primary);
+      font-size: 0.6rem;
+    }
+
+    /* ── Testimonials Section ────────────────────────────── */
+    .testimonials-section { background: var(--secondary); }
+
+    /* Flex for testimonial cards */
+    .testimonials-flex {
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+
+    .testimonial-card {
+      flex: 1;
+      min-width: 260px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      transition: all var(--transition);
+    }
+
+    .testimonial-card:hover {
+      border-color: var(--border);
+      box-shadow: var(--shadow-gold);
+    }
+
+    .stars {
+      color: var(--primary);
+      font-size: 1rem;
+      letter-spacing: 2px;
+      margin-bottom: 18px;
+    }
+
+    .testimonial-card blockquote {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      font-style: italic;
+      margin-bottom: 24px;
+    }
+
+    .reviewer {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .reviewer-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+    }
+
+    .reviewer-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-light);
+    }
+
+    .reviewer-role {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ── CTA Banner ──────────────────────────────────────── */
+    .cta-section {
+      background: linear-gradient(135deg, rgba(201,168,76,0.12) 0%, rgba(168,134,46,0.06) 100%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 0;
+      text-align: center;
+    }
+
+    .cta-section .section-subtitle { margin: 0 auto 40px; }
+
+    .cta-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* ── Responsive adjustments ──────────────────────────── */
+    @media (max-width: 960px) {
+      .hero-inner {
+        flex-direction: column;
+        gap: 48px;
+        padding: 40px 0;
+      }
+      .hero-visual { order: -1; }
+      .showcase-flex, .showcase-flex.reverse { flex-direction: column; gap: 40px; }
+    }
+
+    @media (max-width: 600px) {
+      .hero-stats { flex-wrap: wrap; gap: 24px; }
+      .hero-float-card { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Name: Golam Kibria Zihad, ID: 2420458 -->
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ═══ HEADER ══════════════════════════════════════════ -->
+  <header class="site-header" id="siteHeader">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">F</div>
+          <div class="logo-text">FOR<span>MA</span></div>
+        </a>
+        <nav>
+          <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+          </button>
+          <div class="nav-links" id="navLinks">
+            <a href="index.html" class="active">Home</a>
+            <a href="products.html">Products</a>
+            <a href="contact.html">Contact</a>
+            <a href="cart.html" class="nav-cart" id="cartNavLink">Cart <span class="cart-badge" id="cartBadge"></span></a>
+            <a href="products.html" class="nav-cta">Shop Now</a>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ HERO (display: flex) ════════════════════════════ -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <!-- Content side -->
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="hero-badge-dot"></span>
+            Trusted by 50,000+ professionals
+          </div>
+          <h1 class="hero-title">
+            Work in Comfort.<br>
+            <span class="line-gold">Perform</span> at Your Peak.
+          </h1>
+          <p class="hero-description">
+            FORMA engineers premium ergonomic furniture that adapts to your body, not the other way around. Backed by biomechanical research and crafted with hand-selected materials — because your workspace should be as exceptional as your ambitions.
+          </p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" onclick="showToast('🛋️', 'Welcome to FORMA', 'Discover chairs that redefine comfort and style.')">
+              Explore Collection
+            </button>
+            <a href="products.html" class="btn btn-ghost">View All Products</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <div class="stat-value">98%</div>
+              <div class="stat-label">Customer Satisfaction</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">12yr</div>
+              <div class="stat-label">Warranty Included</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">50k+</div>
+              <div class="stat-label">Happy Professionals</div>
+            </div>
+          </div>
+        </div>
+        <!-- Visual side -->
+        <div class="hero-visual">
+          <div class="hero-img-wrap">
+            <img
+              src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=900&q=80&auto=format&fit=crop"
+              alt="Premium ergonomic office chair in a modern workspace"
+            />
+            <div class="hero-img-overlay"></div>
+          </div>
+          <div class="hero-float-card">
+            <div class="float-card-icon">🏆</div>
+            <div class="float-card-text">
+              <strong>Design Award 2025</strong>
+              <span>Best Ergonomic Furniture Brand</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FEATURES ═════════════════════════════════════════ -->
+  <section class="features-section">
+    <div class="container">
+      <div class="features-header reveal">
+        <span class="section-label">Why Choose FORMA</span>
+        <h2 class="section-title">Engineered for Human Performance</h2>
+        <p class="section-subtitle">Every FORMA product is the result of hundreds of hours of biomechanical research, user testing, and design iteration — so you get a chair that works as hard as you do.</p>
+      </div>
+      <div class="features-flex">
+        <div class="feature-card reveal">
+          <div class="feature-icon">🔬</div>
+          <h3>Biomechanical Research</h3>
+          <p>Our design team works alongside physiotherapists and ergonomics experts to ensure every curve and contour supports your natural posture and reduces fatigue over long work sessions.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">🌿</div>
+          <h3>Sustainable Materials</h3>
+          <p>From certified recycled aluminum frames to OEKO-TEX certified mesh fabrics, FORMA is committed to responsible manufacturing without compromising on luxury or longevity.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">⚙️</div>
+          <h3>Infinite Adjustability</h3>
+          <p>With 14+ points of adjustment on every chair — including 4D armrests, lumbar depth, seat tilt, and headrest angle — FORMA fits every body type perfectly.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">🛡️</div>
+          <h3>12-Year Warranty</h3>
+          <p>We stand behind every chair we make. Our industry-leading 12-year warranty covers all mechanical components, fabric, and structural integrity — no questions asked.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SHOWCASE ══════════════════════════════════════════ -->
+  <section>
+    <div class="container">
+      <div class="showcase-flex reveal">
+        <div class="showcase-visual">
+          <img
+            src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80&auto=format&fit=crop"
+            alt="Luxury ergonomic chair detail — lumbar support and breathable mesh back"
+          />
+        </div>
+        <div class="showcase-content">
+          <span class="section-label">Our Craft</span>
+          <div class="divider"></div>
+          <h2 class="section-title">Precision in Every Detail</h2>
+          <p>At FORMA, we believe that comfort and beauty are not mutually exclusive. Each chair goes through a 47-step quality inspection process before leaving our facility, ensuring that what arrives at your door is nothing short of perfection.</p>
+          <p>Our proprietary AirFlow Mesh technology provides superior breathability compared to traditional foam cushions, maintaining ideal spinal alignment while keeping you cool during even the most intense work sessions.</p>
+          <ul class="feature-list">
+            <li>Cold-forged aircraft-grade aluminum base</li>
+            <li>AirFlow Mesh with 360° breathability</li>
+            <li>Memory foam lumbar cushion — adjustable in 3 dimensions</li>
+            <li>Precision ball-bearing tilt mechanism with 15° lock range</li>
+            <li>PU-coated smooth-glide casters for all floor types</li>
+          </ul>
+          <a href="products.html" class="btn btn-primary">View Our Chairs</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TESTIMONIALS ══════════════════════════════════════ -->
+  <section class="testimonials-section">
+    <div class="container">
+      <div class="features-header reveal">
+        <span class="section-label">Customer Stories</span>
+        <h2 class="section-title">Loved by Professionals Worldwide</h2>
+        <p class="section-subtitle">Don't take our word for it. Hear from the architects, developers, designers, and executives who spend their days in FORMA chairs.</p>
+      </div>
+      <div class="testimonials-flex">
+        <div class="testimonial-card reveal">
+          <div class="stars">★★★★★</div>
+          <blockquote>"I've tried every 'ergonomic' chair on the market over 15 years of remote work. Nothing compares to the FORMA Apex. My chronic back pain is virtually gone after three months. Best investment I've ever made in my workspace."</blockquote>
+          <div class="reviewer">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80&auto=format&fit=crop&crop=face" alt="James M. avatar" class="reviewer-avatar" />
+            <div>
+              <div class="reviewer-name">James Mitchell</div>
+              <div class="reviewer-role">Senior Software Engineer, Stripe</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal">
+          <div class="stars">★★★★★</div>
+          <blockquote>"As an architect I spend 10–12 hours a day at my desk. The FORMA Studio chair's lumbar system is an absolute game-changer. The quality of craftsmanship is exceptional — it feels like sitting in a custom-tailored suit."</blockquote>
+          <div class="reviewer">
+            <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&q=80&auto=format&fit=crop&crop=face" alt="Priya Sharma avatar" class="reviewer-avatar" />
+            <div>
+              <div class="reviewer-name">Priya Sharma</div>
+              <div class="reviewer-role">Principal Architect, Zaha Hadid Architects</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal">
+          <div class="stars">★★★★★</div>
+          <blockquote>"We outfitted our entire 200-person office with FORMA chairs and the impact on employee wellbeing and productivity has been remarkable. The team loves them, and our HR team has reported a significant drop in musculoskeletal complaints."</blockquote>
+          <div class="reviewer">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80&auto=format&fit=crop&crop=face" alt="David Park avatar" class="reviewer-avatar" />
+            <div>
+              <div class="reviewer-name">David Park</div>
+              <div class="reviewer-role">COO, Lightspeed Ventures</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA BANNER ════════════════════════════════════════ -->
+  <section class="cta-section">
+    <div class="container">
+      <span class="section-label">Limited Time Offer</span>
+      <h2 class="section-title">Transform Your Workspace Today</h2>
+      <p class="section-subtitle">Free delivery on all orders over 5,000 TK. 30-day home trial — no risk, no commitment. Financing available from 4,900 TK/month.</p>
+      <div class="cta-actions" style="margin-top: 40px;">
+        <button class="btn btn-primary" onclick="showToast('🎁', 'Offer Applied!', 'Free delivery + 30-day trial activated on your next order.')">
+          Claim Free Delivery
+        </button>
+        <a href="contact.html" class="btn btn-outline">Talk to an Expert</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ════════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <div class="logo-icon">F</div>
+            <div class="logo-text">FOR<span>MA</span></div>
+          </a>
+          <p>Precision-engineered ergonomic furniture for the modern professional. Built to last. Designed to inspire.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Instagram">📷</a>
+            <a href="#" class="social-link" aria-label="Twitter">🐦</a>
+            <a href="#" class="social-link" aria-label="LinkedIn">💼</a>
+            <a href="#" class="social-link" aria-label="YouTube">▶️</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Products</h4>
+          <ul>
+            <li><a href="products.html">Apex Pro Chair</a></li>
+            <li><a href="products.html">Studio Series</a></li>
+            <li><a href="products.html">Executive Chair</a></li>
+            <li><a href="products.html">Standing Desks</a></li>
+            <li><a href="products.html">Accessories</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About FORMA</a></li>
+            <li><a href="#">Our Process</a></li>
+            <li><a href="#">Sustainability</a></li>
+            <li><a href="#">Press Room</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="#">Warranty Policy</a></li>
+            <li><a href="#">Assembly Guides</a></li>
+            <li><a href="#">Shipping & Returns</a></li>
+            <li><a href="#">Trade Program</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 FORMA Ergonomics Ltd. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        <p>Crafted with ❤️ for modern professionals</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Header scroll effect ─────────────────────────────
+    const header = document.getElementById('siteHeader');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // ── Mobile menu toggle ───────────────────────────────
+    document.getElementById('menuToggle').addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+
+    // ── Scroll-reveal ────────────────────────────────────
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
+
+    // ── Toast notification system ─────────────────────────
+    function showToast(icon, title, message) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <div class="toast-icon">${icon}</div>
+        <div class="toast-body">
+          <strong>${title}</strong>
+          <span>${message}</span>
+        </div>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.add('hiding');
+        setTimeout(() => toast.remove(), 380);
+      }, 4000);
+    }
+
+    // ── Cart badge count ──────────────────────────────────
+    (function updateCartBadge() {
+      const cart = JSON.parse(localStorage.getItem('formaCart') || '[]');
+      const count = cart.reduce((sum, item) => sum + item.qty, 0);
+      const badge = document.getElementById('cartBadge');
+      if (badge) {
+        badge.textContent = count;
+        badge.style.display = count > 0 ? 'inline-flex' : 'none';
+      }
+    })();
+  </script>
+</body>
+</html>
